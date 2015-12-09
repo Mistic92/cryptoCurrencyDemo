@@ -91,10 +91,8 @@ public class MainActivity extends AppCompatActivity {
      * Connect to firebase.
      */
     private void connectToFirebase() {
+
         publicCurrencyFirebase = new Firebase("https://publicdata-cryptocurrency.firebaseio.com/");
-        Firebase.getDefaultConfig().setPersistenceEnabled(true);
-        Firebase.getDefaultConfig().setPersistenceCacheSizeBytes(1000);
-        publicCurrencyFirebase.keepSynced(true);
         publicCurrencyFirebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -124,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     /**
