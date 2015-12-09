@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private CurrencyAdapter currencyAdapter;
 
+    private Firebase publicCurrencyFirebase;
+
     /**
      * On create.
      *
@@ -78,12 +80,22 @@ public class MainActivity extends AppCompatActivity {
         loaderLayout.setVisibility(View.GONE);
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        publicCurrencyFirebase.onDisconnect().cancel();
+    }
+
     /**
      * Connect to firebase.
      */
     private void connectToFirebase() {
-        Firebase myFirebaseRef = new Firebase("https://publicdata-cryptocurrency.firebaseio.com/");
-        myFirebaseRef.addValueEventListener(new ValueEventListener() {
+        publicCurrencyFirebase = new Firebase("https://publicdata-cryptocurrency.firebaseio.com/");
+        Firebase.getDefaultConfig().setPersistenceEnabled(true);
+        Firebase.getDefaultConfig().setPersistenceCacheSizeBytes(1000);
+        publicCurrencyFirebase.keepSynced(true);
+        publicCurrencyFirebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
